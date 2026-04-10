@@ -88,8 +88,8 @@ function love.update(dt)
 
 	for bulletIndex, bullet in ipairs(bullets) do
 		local bulletSpeed = 10
-		bullet.x = (bullet.x + (bulletSpeed * dt))
-		bullet.y = (bullet.y + (bulletSpeed * dt))
+		bullet.x = (bullet.x + (bulletSpeed * dt)) * math.cos(bullet.angle)
+		bullet.y = (bullet.y + (bulletSpeed * dt)) * math.sin(bullet.angle)
 	end
 
 end
