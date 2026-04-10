@@ -43,12 +43,13 @@ function love.draw()
 				5
 			)
 
-			for bulletIndex, bullet in ipairs(bullets) do
+			love.graphics.pop()
+
+			for _, bullet in ipairs(bullets) do
 				love.graphics.setColor(0, 1, 0)
 				love.graphics.circle("fill", bullet.x, bullet.y, 5)
 			end
 
-			love.graphics.pop()
 		end
 	end
 
@@ -86,10 +87,9 @@ function love.update(dt)
 	shipX = (shipX + shipSpeedX * dt) % arenaWidth
 	shipY = (shipY + shipSpeedY * dt) % arenaHeight
 
-	for bulletIndex, bullet in ipairs(bullets) do
-		local bulletSpeed = 10
-		bullet.x = (bullet.x + (bulletSpeed * dt)) * math.cos(bullet.angle)
-		bullet.y = (bullet.y + (bulletSpeed * dt)) * math.sin(bullet.angle)
+	for _, bullet in ipairs(bullets) do
+		local bulletSpeed = 100
+		bullet.x = bullet.x + (math.cos(bullet.angle) * bulletSpeed * dt)
+		bullet.y = bullet.y + (math.sin(bullet.angle) * bulletSpeed * dt)
 	end
-
 end
