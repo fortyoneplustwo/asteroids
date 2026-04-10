@@ -13,15 +13,12 @@ function love.load()
 	shipSpeedY = 0
 
 	bullets = {}
+	bulletTimerLimit = 0.5
+	bulletTimer = bulletTimerLimit
 end
 
 function love.keypressed(key)
 	if key == "s" then
-		table.insert(bullets, {
-			x = shipX + math.cos(shipAngle) * shipRadius,
-			y = shipY + math.sin(shipAngle) * shipRadius,
-			angle = shipAngle,
-		})
 	end
 end
 
@@ -49,7 +46,6 @@ function love.draw()
 				love.graphics.setColor(0, 1, 0)
 				love.graphics.circle("fill", bullet.x, bullet.y, 5)
 			end
-
 		end
 	end
 
@@ -68,6 +64,7 @@ function love.draw()
 end
 
 function love.update(dt)
+	-- ship
 	if love.keyboard.isDown("up") then
 		local shipSpeed = 100
 		shipSpeedX = shipSpeedX + (math.cos(shipAngle) * shipSpeed * dt)
@@ -86,6 +83,21 @@ function love.update(dt)
 
 	shipX = (shipX + shipSpeedX * dt) % arenaWidth
 	shipY = (shipY + shipSpeedY * dt) % arenaHeight
+
+	-- bullets
+	bulletTimer = bulletTimer + dt
+
+	if love.keyboard.isDown("s") then
+		if bulletTimer >= bulletTimerLimit then
+			bulletTimer = 0
+
+			table.insert(bullets, {
+				x = shipX + math.cos(shipAngle) * shipRadius,
+				y = shipY + math.sin(shipAngle) * shipRadius,
+				angle = shipAngle,
+			})
+		end
+	end
 
 	for _, bullet in ipairs(bullets) do
 		local bulletSpeed = 100
